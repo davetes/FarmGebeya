@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import NextAuth from "next-auth"
+import GitHub from "next-auth/providers/github"
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -98,7 +100,7 @@ const page = () => {
         {/* links for google or apple tweeter */}
         <div className="flex  space-x-4">
           <div className="flex-1 flex justify-center ">
-            <a href="https://www.google.com">
+            <a href="https://www.google.com" target="_black">
               <Image
                 src="/google-icon.svg"
                 alt="google"
