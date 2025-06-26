@@ -80,6 +80,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           </div>
         </div>
         <Image src="/cart.svg" alt="cart" width={50} height={50} />
+        <Link href="/ai"><Image src="/badge-question-mark.svg"  alt="help"  width={50} height={50} /></Link>
       </div>
     </div>
   );
