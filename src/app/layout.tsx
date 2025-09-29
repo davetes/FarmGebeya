@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/footer";
+import { CartProvider } from "@/context/CartContext";
 
 export const metadata = {
   title: "Farm-Gebeya",
@@ -16,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex flex-col min-h-screen">
-        <main className="flex-grow">{children}</main>
+        <CartProvider>
+          <main className="flex-grow">{children}</main>
+        </CartProvider>
         <div></div>
       </body>
     </html>

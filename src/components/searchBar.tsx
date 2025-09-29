@@ -3,6 +3,9 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRef, useEffect } from "react";
+import AiSidebar from "./AiSidebar";
+import CartSidebar from "./CartSidebar";
+import { useCart } from "@/context/CartContext";
 interface SearchBarProps {
   onSearch: (query: string) => void;
 }
@@ -10,6 +13,9 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const { totalCount, addItem } = useCart();
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = () => {
@@ -79,9 +85,20 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             </a>
           </div>
         </div>
-        <Image src="/cart.svg" alt="cart" width={50} height={50} />
-        <Link href="/ai"><Image src="/badge-question-mark.svg"  alt="help"  width={50} height={50} /></Link>
+        <button className="relative" onClick={() => setCartOpen(true)} aria-label="Open Cart">
+          <Image src="/cart.svg" alt="cart" width={50} height={50} />
+          {totalCount > 0 && (
+            <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-pink-500 text-white text-xs flex items-center justify-center">
+              {totalCount}
+            </span>
+          )}
+        </button>
+        <button onClick={() => setAiOpen(true)} aria-label="Open Help Assistant">
+          <Image src="/badge-question-mark.svg" alt="help" width={50} height={50} />
+        </button>
       </div>
+      <AiSidebar open={aiOpen} onClose={() => setAiOpen(false)} />
+      <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   );
 };

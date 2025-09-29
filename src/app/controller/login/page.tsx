@@ -9,6 +9,7 @@ export default function AuthModal() {
     { value: string; label: string }[]
   >([]); // State to store the list of countries
   const [selectedCountry, setSelectedCountry] = useState<string>("Ethiopia"); // Default country
+  const [inputValue, setInputValue] = useState<string>(""); // Controls the search input in react-select
 
   // Fetch countries from an API
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function AuthModal() {
 
   // Handle selection change
   const handleCountryChange = (selectedOption: any) => {
+    if (!selectedOption) return;
     setSelectedCountry(selectedOption.value);
   };
 
@@ -43,14 +45,12 @@ export default function AuthModal() {
         {/* Title */}
         <h2 className="text-2xl font-bold mb-1">Register/Sign in</h2>
         <p className="text-sm text-green-600 flex items-center gap-2 mb-4">
-          ✅ Your information is protected
+          Your information is protected
         </p>
 
         {/* Promo Banner */}
         <div className="bg-pink-100 text-red-600 text-sm p-2 rounded mb-4">
-          <span className="font-semibold">
-            🏷 New shoppers get up to 70% off
-          </span>
+          New shoppers get up to 70% off
         </div>
 
         {/* Email Input */}
@@ -80,12 +80,7 @@ export default function AuthModal() {
         {/* Social Icons */}
         <div className="flex justify-between px-4 mb-4">
           <Image src="/google-icon.svg" alt="Google" width={30} height={30} />
-          <Image
-            src="/facebook-icon.svg"
-            alt="Facebook"
-            width={30}
-            height={30}
-          />
+          <Image src="/facebook-icon.svg" alt="Facebook" width={30} height={30} />
           <Image src="/x-icon.svg" alt="X" width={30} height={30} />
           <Image src="/apple-icon.svg" alt="Apple" width={30} height={30} />
         </div>
@@ -94,13 +89,25 @@ export default function AuthModal() {
         <div className="text-sm text-center text-gray-600">
           <Select
             options={countries} // Pass the country options
-            value={{ value: selectedCountry, label: selectedCountry }} // Default selected value
+            value={{ value: selectedCountry, label: selectedCountry }} // Selected value
             onChange={handleCountryChange} // Handle country change
             className="w-full mb-4" // Make the select full width
             placeholder="Select your country"
+            isSearchable // Enable typing to search
+            inputValue={inputValue}
+            onInputChange={(value, { action }) => {
+              if (action !== "input-change") return;
+              setInputValue(value);
+              if (value) {
+                const match = countries.find((c) =>
+                  c.label.toLowerCase().startsWith(value.toLowerCase())
+                );
+                if (match) setSelectedCountry(match.value);
+              }
+            }}
           />
           <p className="mt-2">
-            Location: <span className="font-semibold">{selectedCountry} ⌄</span>
+            Location: <span className="font-semibold">{selectedCountry} </span>
           </p>
         </div>
       </div>
